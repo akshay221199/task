@@ -50,7 +50,7 @@ const TransactionTable = () => {
   const handleFilterSubmit = () => {
     setFilters((prevFilters) => ({
       ...prevFilters,
-      page: 1, // Reset to page 1 on filter submit
+      page: 1, 
     }));
   };
 
@@ -61,10 +61,8 @@ const TransactionTable = () => {
     }));
   };
 
-  // Check if the "Next" button should be disabled
   const isNextDisabled = transactions.length < filters.limit;
 
-  // Shorten the title and description
   const shortenText = (text, maxLength) => {
     return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
   };
@@ -73,7 +71,6 @@ const TransactionTable = () => {
     <div style={{ padding: '20px', backgroundColor: '#f4f4f9' }}>
       <h2>Transaction Table</h2>
 
-      {/* Filter Section */}
       <div style={{ marginBottom: '20px' }}>
         <input
           type="text"
@@ -126,7 +123,6 @@ const TransactionTable = () => {
         </button>
       </div>
 
-      {/* Loading and Table Section */}
       {loading ? (
         <p>Loading transactions...</p>
       ) : (
@@ -176,7 +172,6 @@ const TransactionTable = () => {
         </div>
       )}
 
-      {/* Pagination Section */}
       <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
         <button
           onClick={() => handlePagination(filters.page - 1)}
@@ -187,7 +182,7 @@ const TransactionTable = () => {
         </button>
         <button
           onClick={() => handlePagination(filters.page + 1)}
-          disabled={isNextDisabled}  // Disabling the Next button if there are fewer transactions than limit
+          disabled={isNextDisabled}  // Disabling the Next button when the last transation apear
           style={{ margin: '5px' }}
         >
           Next

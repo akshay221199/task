@@ -3,16 +3,13 @@ import { AsyncHandler } from '../utility/AsyncHandler.js';
 import { ApiError } from '../utility/ApiError.js';
 import Transaction from '../models/Product.model.js';
 
-// Combined API Handler
 const combineData = AsyncHandler(async (req, res) => {
   const { month, price } = req.query;
 
-  // Validate the month format
   if (!month || !/^\d{1,2}$/.test(month) || month < 1 || month > 12) {
     throw new ApiError(400, 'Invalid month format. Please provide a valid month between 1 and 12.');
   }
 
-  // Validate the price format
   if (price && !/^\d{1,10}$/.test(price)) {
     throw new ApiError(400, 'Invalid price format');
   }

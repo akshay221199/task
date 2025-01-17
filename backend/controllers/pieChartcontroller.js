@@ -1,5 +1,5 @@
 import { ApiError } from '../utility/ApiError.js';
-import Transaction from '../models/Product.model.js'; // Assuming you have a 'Product' model for transactions
+import Transaction from '../models/Product.model.js'; 
 import { AsyncHandler } from '../utility/AsyncHandler.js';
 const pieChartData = AsyncHandler(async (req,res) => {
   const { month } = req.query;
@@ -10,7 +10,6 @@ const pieChartData = AsyncHandler(async (req,res) => {
   }
 
   try {
-    // Aggregation to get pie chart data
     const transactionsAggregation = await Transaction.aggregate([
       {
         $match: {
@@ -27,16 +26,11 @@ const pieChartData = AsyncHandler(async (req,res) => {
       },
     ]);
 
-    // Check if the aggregation returned any data
     if (!transactionsAggregation || transactionsAggregation.length === 0) {
       throw new ApiError(404, 'No data found for the selected month.');
     }
 
-    // Return the aggregation result to the controller where it's being called
-    // return transactionsAggregation;
-    // return  res.status(200).json({
-    //   data: transactionsAggregation,
-    // });
+   
 
     const response = {
       statusCode: 200,
@@ -50,7 +44,6 @@ const pieChartData = AsyncHandler(async (req,res) => {
     return response;
 
   } catch (error) {
-    // If any error occurs, log it and throw a 500 error
     throw new ApiError(500, 'Error while fetching pie chart data', error.message);
   }
 });

@@ -5,7 +5,6 @@ import Transaction from '../models/Product.model.js';
 const barChart = AsyncHandler(async (req, res) => {
     const { month } = req.query;
 
-    // Validate inputs
     if (!month) {
         throw new ApiError(400, 'Please provide a month.');
     }
@@ -68,7 +67,7 @@ const barChart = AsyncHandler(async (req, res) => {
             }
         },
         {
-            $sort: { _id: 1 } // Ensure results are sorted
+            $sort: { _id: 1 } 
         }
     ]);
 

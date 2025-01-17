@@ -3,15 +3,14 @@ import axios from 'axios';
 
 const StatisticsPage = () => {
   const [month, setMonth] = useState('');
-  const [sold, setSold] = useState('both'); // 'both', 'true', 'false'
+  const [sold, setSold] = useState('both'); 
   const [transactions, setTransactions] = useState([]);
   const [statistics, setStatistics] = useState(null);
   const [error, setError] = useState(null);
 
-  // Fetch the statistics when the filter button is clicked
   const fetchStatistics = async () => {
     try {
-      setError(null); // Reset error state
+      setError(null); 
       const response = await axios.get('http://localhost:5000/api/v1/statistics/statistics', {
         params: { month, sold },
       });
@@ -25,10 +24,9 @@ const StatisticsPage = () => {
     }
   };
 
-  // Handle form submission (trigger fetchStatistics on submit)
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetchStatistics(); // Trigger the data fetch on button click
+    fetchStatistics(); 
   };
 
   return (
@@ -55,7 +53,7 @@ const StatisticsPage = () => {
     value={sold}
     onChange={(e) => setSold(e.target.value)}
     className="form-select"
-    style={{ width: '80%' }} // Adjusts the width of the select input
+    style={{ width: '80%' }} 
   >
     <option value="both">Both</option>
     <option value="true">Sold</option>

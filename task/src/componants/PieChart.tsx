@@ -6,17 +6,17 @@ import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, CategoryScale } f
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
 
 const PieChart = () => {
-  const [chartData, setChartData] = useState<{ _id: string; count: number }[] | null>(null);
-  const [month, setMonth] = useState('1'); // Default month as January
+  const [chartData, setChartData] = useState(null);
+  const [month, setMonth] = useState('1'); 
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Fetch data when month changes
+   
     const fetchChartData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/v1/pieChart/piechart?month=${month}`);
+        const response = await axios.get(`http://localhost:5000/api/v1/pieChart/piechart?month=${month}`);  // this is backend hit point
         setChartData(response.data.data.transactionsAggregation);
-        setError(null); // Reset any errors
+        setError(null); 
       } catch (err) {
         if (axios.isAxiosError(err) && err.response) {
           setError(err.response.data.message);
@@ -27,9 +27,8 @@ const PieChart = () => {
     };
 
     fetchChartData();
-  }, [month]); // Fetch data when the month changes
+  }, [month]); //It Fetch data when the month changes atomatically 
 
-  // Prepare chart data if available
   const prepareChartData = () => {
     if (!chartData) return { labels: [], datasets: [] };
     const labels = chartData.map(item => item._id);
@@ -41,7 +40,7 @@ const PieChart = () => {
         {
           label: 'Transaction Categories',
           data,
-          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF5733'], // Customize colors
+          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF5733'], // Customize colors for the pie chart each for new
           hoverOffset: 4,
         },
       ],
@@ -50,26 +49,26 @@ const PieChart = () => {
 
   const chartOptions = {
     responsive: true,
-    maintainAspectRatio: false, // This allows for custom sizing
+    maintainAspectRatio: false, 
     plugins: {
       legend: {
-        position: 'top' as const, // Customize legend position
+        position: 'top' as const,
         labels: {
           font: {
-            size: 18, // Bigger font size for legend
+            size: 18, 
           },
         },
       },
       tooltip: {
         bodyFont: {
-          size: 16, // Tooltip font size
+          size: 16, 
         },
       },
       title: {
         display: true,
         text: 'Transactions by Category',
         font: {
-          size: 22, // Bigger font size for title
+          size: 22, 
         },
       },
     },
@@ -77,7 +76,7 @@ const PieChart = () => {
       y: {
         ticks: {
           font: {
-            size: 16, // Font size for y-axis ticks
+            size: 16, 
           },
         },
       },
