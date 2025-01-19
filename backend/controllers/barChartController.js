@@ -22,54 +22,28 @@ const barChart = AsyncHandler(async (req, res) => {
     };
 
     const data = await Transaction.aggregate([
-        { $match: matchFilter },
+        { $match: matchFilter }, // Apply the match filter
         {
-            $group: {
-                _id: {
-                    $cond: [
-                        { $lt: ['$price', 800] },
-                        {
-                            $concat: [
-                                {
-                                    $toString: {
-                                        $multiply: [
-                                            { $floor: { $divide: ['$price', rangeSize] } },
-                                            rangeSize,
-                                        ]
-                                    }
-                                },
-                                '-',
-                                {
-                                    $toString: {
-                                        $add: [
-                                            {
-                                                $multiply: [
-                                                    { $floor: { $divide: ['$price', rangeSize] } },
-                                                    rangeSize,
-                                                ]
-                                            },
-                                            rangeSize - 1,
-                                        ]
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            $cond: [
-                                { $and: [{ $gte: ['$price', 800] }, { $lte: ['$price', 900] }] },
-                                '800-900',
-                                '901-above',
-                            ]
-                        }
-                    ]
-                },
-                count: { $sum: 1 },
-            }
+          $bucket: {
+            groupBy: "$price", // Group by price
+            boundaries: [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, Infinity], // Price ranges
+            default: "Other", // Default bucket for non-matching prices
+            output: {
+              count: { $sum: 1 }, // Count transactions in each range
+            },
+          },
         },
         {
-            $sort: { _id: 1 } 
-        }
-    ]);
+          $project: {
+            _id: 1, // Keep the range name as _id
+            count: 1, // Keep the count of transactions
+          },
+        },
+        {
+          $sort: { _id: 1 }, // Sort by price range
+        },
+      ]);
+      
 
     res.status(200).json({
         statusCode: 200,
