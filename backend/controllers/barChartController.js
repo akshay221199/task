@@ -22,25 +22,25 @@ const barChart = AsyncHandler(async (req, res) => {
     };
 
     const data = await Transaction.aggregate([
-        { $match: matchFilter }, // Apply the match filter
+        { $match: matchFilter }, 
         {
           $bucket: {
-            groupBy: "$price", // Group by price
-            boundaries: [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, Infinity], // Price ranges
-            default: "Other", // Default bucket for non-matching prices
+            groupBy: "$price",
+            boundaries: [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, Infinity], 
+            default: "Other",
             output: {
-              count: { $sum: 1 }, // Count transactions in each range
+              count: { $sum: 1 }, 
             },
           },
         },
         {
           $project: {
-            _id: 1, // Keep the range name as _id
-            count: 1, // Keep the count of transactions
+            _id: 1, 
+            count: 1, 
           },
         },
         {
-          $sort: { _id: 1 }, // Sort by price range
+          $sort: { _id: 1 }, 
         },
       ]);
       
